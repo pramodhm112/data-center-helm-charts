@@ -406,31 +406,31 @@ jira:
     # are passed to the same pod each time, set sessionAffinity to ClientIP.
     # See: https://kubernetes.io/docs/reference/networking/virtual-ips/#session-affinity
     #
-    sessionAffinity: None
+    #sessionAffinity: None
 
     # -- Session affinity configuration
     #
-    sessionAffinityConfig:
+    #sessionAffinityConfig:
 
-      clientIP:
+      #clientIP:
 
         # -- Specifies the seconds of ClientIP type session sticky time.
         # The value must be > 0 && <= 86400(for 1 day) if ServiceAffinity == "ClientIP". Default value is 10800 (for 3 hours).
         #
-        timeoutSeconds:
+        #timeoutSeconds:
 
     # -- Use specific loadBalancerIP. Only applies to service type LoadBalancer.
     #
-    loadBalancerIP:
+    #loadBalancerIP:
 
     # -- The Tomcat context path that Jira will use. The ATL_TOMCAT_CONTEXTPATH
     # will be set automatically.
     #
-    contextPath:
+    #contextPath:
 
     # -- Additional annotations to apply to the Service
     #
-    annotations: {}
+    #annotations: {}
 
   # Standard K8s field that holds pod-level security attributes and common container settings.
   # https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
@@ -545,38 +545,38 @@ jira:
   # Use AWS S3 to store avatars. From Jira 9.9 onwards.
   #
 
-  s3Storage:
+  #s3Storage:
 
-    avatars:
+    #avatars:
       # Bucket name to store avatars. If a bucket name and region (see below) are defined, Jira will automatically
       # use AWS S3 to store avatars. Only bucket name is required, not the full arn.
       #
-      bucketName:
+      #bucketName:
 
       # AWS region where the S3 bucket is located.
       #
-      bucketRegion:
+      #bucketRegion:
 
       # Override the default AWS API endpoint with a custom one
       #
-      endpointOverride:
+      #endpointOverride:
 
   # Data Center clustering
   #
-  clustering:
+  #clustering:
 
     # -- Set to 'true' if Data Center clustering should be enabled
     # This will automatically configure cluster peer discovery between cluster nodes.
     #
-    enabled: false
+    #enabled: false
 
-  shutdown:
+  #shutdown:
 
     # -- The termination grace period for pods during shutdown. This
     # should be set to the internal grace period, plus a small buffer
     # to allow the JVM to fully terminate.
     #
-    terminationGracePeriodSeconds: 30
+    #terminationGracePeriodSeconds: 30
 
     # -- By default pods will be stopped via a [preStop hook](https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/),
     # using a script supplied by the Docker image. If any other
@@ -586,7 +586,7 @@ jira:
     # command](https://bitbucket.org/atlassian-docker/docker-atlassian-jira/src/master/shutdown-wait.sh)
     # for details.
     #
-    command: "/shutdown-wait.sh"
+    #command: "/shutdown-wait.sh"
 
   # Pod resource requests
   #
@@ -636,11 +636,11 @@ jira:
   # By default, dbconfig.xml is generated only once. Set `forceConfigUpdate` to true
   # to change this behavior.
   #
-  forceConfigUpdate: false
+  #forceConfigUpdate: false
   # Specifies a list of additional arguments that can be passed to the Jira JVM, e.g.
   # system properties.
   #
-  additionalJvmArgs: []
+  #additionalJvmArgs: []
 
   # -- Specifies a list of additional Java libraries that should be added to the
   # Jira container. Each item in the list should specify the name of the volume
@@ -649,7 +649,7 @@ jira:
   # specify which directory in the volume contains the library file. Additional details:
   # https://atlassian.github.io/data-center-helm-charts/examples/external_libraries/EXTERNAL_LIBS/
   #
-  additionalLibraries: []
+  #additionalLibraries: []
   #  - volumeName:
   #    subDirectory:
   #    fileName:
@@ -666,7 +666,7 @@ jira:
   # An alternative to this method is to install the plugins via "Manage Apps" in the
   # product system administration UI.
   #
-  additionalBundledPlugins: []
+  #additionalBundledPlugins: []
   #  - volumeName:
   #    subDirectory:
   #    fileName:
@@ -675,17 +675,17 @@ jira:
   # can refer to existing volumes, or new volumes can be defined via
   # 'volumes.additional'.
   #
-  additionalVolumeMounts: []
+  #additionalVolumeMounts: []
 
   # -- Defines any additional environment variables to be passed to the Jira
   # container. See https://hub.docker.com/r/atlassian/jira-software for
   # supported variables.
   #
-  additionalEnvironmentVariables: []
+  #additionalEnvironmentVariables: []
 
   # -- Defines any additional ports for the Jira container.
   #
-  additionalPorts: []
+  #additionalPorts: []
   #  - name: jmx
   #    containerPort: 5555
   #    protocol: TCP
@@ -694,7 +694,7 @@ jira:
   # Note that this will not create any corresponding volume mounts;
   # those needs to be defined in jira.additionalVolumeMounts
   #
-  additionalVolumeClaimTemplates: []
+  #additionalVolumeClaimTemplates: []
   #  - name: myadditionalvolumeclaim
   #    storageClassName:
   #    resources:
@@ -704,211 +704,66 @@ jira:
   # -- Defines topology spread constraints for Jira pods. See details:
   # https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/
   #
-  topologySpreadConstraints: []
+  #topologySpreadConstraints: []
   # - maxSkew: 1
   #   topologyKey: kubernetes.io/hostname
   #   whenUnsatisfiable: ScheduleAnyway
   #   labelSelector:
   #     matchLabels:
-
-# Monitoring
-#
-monitoring:
-
-  # -- Expose JMX metrics with jmx_exporter https://github.com/prometheus/jmx_exporter
-  #
-  exposeJmxMetrics: false
-
-  # -- Fetch jmx_exporter jar from the image. If set to false make sure to manually copy the jar
-  # to shared home and provide an absolute path in jmxExporterCustomJarLocation
-  #
-  fetchJmxExporterJar: true
-
-  # -- Image repository with jmx_exporter jar
-  #
-  jmxExporterImageRepo: bitnami/jmx-exporter
-
-  # -- Image tag to be used to pull jmxExporterImageRepo
-  #
-  jmxExporterImageTag: 0.18.0
-
-  # -- Port number on which metrics will be available
-  #
-  jmxExporterPort: 9999
-
-  # -- JMX exporter port type
-  #
-  jmxExporterPortType: ClusterIP
-
-  # -- Location of jmx_exporter jar file if mounted from a secret or manually copied to shared home
-  #
-  jmxExporterCustomJarLocation:
-
-  # -- Custom jmx config with the rules. Make sure to keep jmx-config key
-  #
-  jmxExporterCustomConfig: {}
-  # jmx-config: |
-  #   rules:
-  #     - pattern: ".*"
-
-  serviceMonitor:
-
-    # -- Create ServiceMonitor to start scraping metrics. ServiceMonitor CRD needs to be created in advance.
-    #
-    create: false
-
-    # -- ServiceMonitorSelector of the prometheus instance.
-    #
-    prometheusLabelSelector: {}
-      # release: prometheus
-
-    # -- Scrape interval for the JMX service.
-    #
-    scrapeIntervalSeconds: 30
-
-  grafana:
-
-    # -- Create ConfigMaps with Grafana dashboards
-    #
-    createDashboards: false
-
-    # -- Label selector for Grafana dashboard importer sidecar
-    #
-    dashboardLabels: {}
-      # grafana_dashboard: dc_monitoring
-
-# Fluentd configuration
-#
-# Jira log collection and aggregation can be enabled using Fluentd. This config
-# assumes an existing ELK stack has been stood up and is available.
-# https://www.fluentd.org/
-#
-fluentd:
-
-  # -- Set to 'true' if the Fluentd sidecar (DaemonSet) should be added to each pod
-  #
-  enabled: false
-
-  # -- The Fluentd sidecar image repository
-  #
-  imageRepo: fluent/fluentd-kubernetes-daemonset
-  # -- The Fluentd sidecar image tag
-  #
-  imageTag: v1.11.5-debian-elasticsearch7-1.2
-
-  # -- The command used to start Fluentd. If not supplied the default command
-  # will be used: "fluentd -c /fluentd/etc/fluent.conf -v"
-  #
-  # Note: The custom command can be free-form, however pay particular attention to
-  # the process that should ultimately be left running in the container. This process
-  # should be invoked with 'exec' so that signals are appropriately propagated to it,
-  # for instance SIGTERM. An example of how such a command may look is:
-  # "<command 1> && <command 2> && exec <primary command>"
-  command:
-
-  # -- Set to 'true' if a custom config (see 'configmap-fluentd.yaml' for default)
-  # should be used for Fluentd. If enabled this config must be supplied via the
-  # 'fluentdCustomConfig' property below.
-  #
-  customConfigFile: false
-
-  # -- Custom fluent.conf file
-  #
-  fluentdCustomConfig: {}
-  # fluent.conf: |
-    # <source>
-    #   @type tail
-    #   <parse>
-    #   @type multiline
-    #   format_firstline /\d{4}-\d{1,2}-\d{1,2}/
-    #   </parse>
-    #   path /opt/atlassian/jira/logs/access_log.*
-    #   pos_file /tmp/jiralog.pos
-    #   tag jira-access-logs
-    # </source>
-
-  # -- The port on which the Fluentd sidecar will listen
-  #
-  httpPort: 9880
-
-  # Elasticsearch config based on your ELK stack
-  #
-  elasticsearch:
-
-    # -- Set to 'true' if Fluentd should send all log events to an Elasticsearch service.
-    #
-    enabled: true
-
-    # -- The hostname of the Elasticsearch service that Fluentd should send logs to.
-    #
-    hostname: elasticsearch
-
-    # -- The prefix of the Elasticsearch index name that will be used
-    #
-    indexNamePrefix: jira
-
-  # -- Specify custom volumes to be added to Fluentd container (e.g. more log sources)
-  #
-  extraVolumes: []
-  # - name: local-home
-  #   mountPath: /opt/atlassian/jira/logs
-  #   subPath: log
-  #   readOnly: true
-
-
+  
 # -- Custom annotations that will be applied to all Jira pods
 #
-podAnnotations: {}
+#podAnnotations: {}
 #  name: <value>
 
 # -- Custom labels that will be applied to all Jira pods
 #
-podLabels: {}
+#podLabels: {}
 #  name: <value>
 
 # -- Standard K8s node-selectors that will be applied to all Jira pods
 #
-nodeSelector: {}
+#nodeSelector: {}
 #  name: <value>
 
 # -- Standard K8s tolerations that will be applied to all Jira pods
 #
-tolerations: []
+#tolerations: []
 # - effect: <name>
 #   operator: <operator>
 #   key: <key>
 
 # -- Standard K8s affinities that will be applied to all Jira pods
 #
-affinity: {}
+#affinity: {}
 #  name: <value>
 
 # -- Standard K8s schedulerName that will be applied to all Jira pods.
 # Check Kubernetes documentation on how to configure multiple schedulers:
 # https://kubernetes.io/docs/tasks/extend-kubernetes/configure-multiple-schedulers/#specify-schedulers-for-pods
 #
-schedulerName:
+#schedulerName:
 
 # -- Priority class for the application pods. The PriorityClass with this name needs to be available in the cluster.
 # For details see https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/#priorityclass
 #
-priorityClassName:
+#priorityClassName:
 
 # -- Additional container definitions that will be added to all Jira pods
 #
-additionalContainers: []
+#additionalContainers: []
 #  - name: <name>
 #    image: <image>:<tag>
 
 # -- Additional initContainer definitions that will be added to all Jira pods
 #
-additionalInitContainers: []
+#additionalInitContainers: []
 #  - name: <name>
 #    image: <image>:<tag>
 
 # -- Additional labels that should be applied to all resources
 #
-additionalLabels: {}
+#additionalLabels: {}
 #  name: <value>
 
 # -- Additional existing ConfigMaps and Secrets not managed by Helm that should be
@@ -920,7 +775,7 @@ additionalLabels: {}
 # VolumeMount and Volumes are added with this name and index position, for example;
 # custom-config-0, keystore-2
 #
-additionalFiles: []
+#additionalFiles: []
 #  - name: custom-config
 #    type: configMap
 #    key: log4j.properties
@@ -936,7 +791,7 @@ additionalFiles: []
 
 # -- Additional host aliases for each pod, equivalent to adding them to the /etc/hosts file.
 # https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/
-additionalHosts: []
+#additionalHosts: []
 #  - ip: "127.0.0.1"
 #    hostnames:
 #    - "foo.local"
