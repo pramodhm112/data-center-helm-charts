@@ -27,61 +27,43 @@
 # but can be altered once manual configuration is complete.
 #
 replicaCount: 1
-
-# Image configuration
-#
 image:
-
-  # -- The Jira Docker image to use
-  # https://hub.docker.com/r/atlassian/jira-software
-  #
   repository: atlassian/jira-software
-
-  # -- Image pull policy
-  #
   pullPolicy: IfNotPresent
-
-  # -- The docker image tag to be used - defaults to the Chart appVersion
-  #
-  tag: ""
-
-# K8s ServiceAccount configuration. Give fine-grained identity and authorization
-# to Pods
-#
-serviceAccount:
+  tag: "9.4.8"
+#serviceAccount:
 
   # -- Set to 'true' if a ServiceAccount should be created, or 'false' if it
   # already exists.
   #
-  create: true
+  #create: true
 
   # -- The name of the ServiceAccount to be used by the pods. If not specified, but
   # the "serviceAccount.create" flag is set to 'true', then the ServiceAccount name
   # will be auto-generated, otherwise the 'default' ServiceAccount will be used.
   # https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#use-the-default-service-account-to-access-the-api-server
   #
-  name:
+  #name:
 
   # -- For Docker images hosted in private registries, define the list of image pull
   # secrets that should be utilized by the created ServiceAccount
   # https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
   #
-  imagePullSecrets: []
+  #imagePullSecrets: []
   # - name: secretName
 
   # -- Annotations to add to the ServiceAccount (if created)
   #
-  annotations: {}
+  #annotations: {}
 
   # Use EKS IRSA. See: https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html
   #
-  eksIrsa:
+  #eksIrsa:
 
     # Defining a full arn of AWS role to assume will automatically annotate jira,
     # e.g. `eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/S3Access`.
     # "-Daws.webIdentityTokenFile=/var/run/secrets/eks.amazonaws.com/serviceaccount/token" will be automatically added to Jira JVM arguments
-    roleArn:
-
+    #roleArn:
 
 # REQUIRED - Database configuration
 #
@@ -102,7 +84,7 @@ database:
    # - 'postgresaurora96'
   # https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databasetype
   #
-  type:
+  type: 'postgres72'
 
   # -- The jdbc URL of the database. If not specified, then it will need to be provided
   # via the browser during manual configuration post deployment. Example URLs include:
@@ -112,7 +94,7 @@ database:
    # - 'jdbc:oracle:thin:@<dbhost>:1521:<SID>'
   # https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databaseurl
   #
-  url:
+  url: 'jdbc://10.0.222.35:5432/jira'
 
   # -- The Java class name of the JDBC driver to be used. If not specified, then it will
   # need to be provided via the browser during manual configuration post deployment.
@@ -123,12 +105,10 @@ database:
    # - 'com.microsoft.sqlserver.jdbc.SQLServerDriver'
   # https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#databasedriver:
   #
-  driver:
-
+  driver: 'org.postgresql.Driver'
   # JDBC connection credentials
   #
   credentials:
-
     # -- The name of the K8s Secret that contains the database login credentials.
     # If the secret is specified, then the credentials will be automatically utilised on
     # Jira startup. If the secret is not provided, then the credentials will need to be
@@ -139,16 +119,13 @@ database:
     # --from-literal=password=<password>'
     # https://kubernetes.io/docs/concepts/configuration/secret/#opaque-secrets
     #
-    secretName:
-
+    secretName: dbuser
     # -- The key ('username') in the Secret used to store the database login username
     #
-    usernameSecretKey: username
-
+    usernameSecretKey: admin
     # -- The key ('password') in the Secret used to store the database login password
     #
-    passwordSecretKey: password
-
+    passwordSecretKey: admin
 # REQUIRED - Volume configuration
 #
 # By default, the charts will configure the local-home and shared-home as ephemeral
