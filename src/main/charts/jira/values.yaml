@@ -157,14 +157,14 @@ volumes:
       # -- Specify the name of the 'StorageClass' that should be used for the local-home
       # volume claim.
       #
-      storageClassName:
+      storageClassName: managed-csi
 
       # -- Specifies the standard K8s resource requests and/or limits for the local-home
       # volume claims.
       #
       resources:
         requests:
-          storage: 1Gi
+          storage: 10Gi
 
     # -- Static provisioning of local-home using K8s PVs and PVCs
     #
@@ -178,7 +178,7 @@ volumes:
     # the bound 'persistentVolumeClaim.claimName' for the 'customVolume' object.
     # https://kubernetes.io/docs/concepts/storage/persistent-volumes/#static
     #
-    customVolume: {}
+    #customVolume: {}
     # persistentVolumeClaim:
     #   claimName: "<pvc>"
 
@@ -192,7 +192,6 @@ volumes:
   # https://confluence.atlassian.com/adminjiraserver/set-up-a-jira-data-center-cluster-993929600.html
   #
   sharedHome:
-
     # Dynamic provisioning of shared-home using the K8s Storage Class
     #
     # https://kubernetes.io/docs/concepts/storage/persistent-volumes/#dynamic
@@ -207,14 +206,14 @@ volumes:
       # -- Specify the name of the 'StorageClass' that should be used for the 'shared-home'
       #volume claim.
       #
-      storageClassName:
+      storageClassName: my-azurefile
 
       # -- Specifies the standard K8s resource requests and/or limits for the shared-home
       # volume claims.
       #
       resources:
         requests:
-          storage: 1Gi
+          storage: 10Gi
 
     # -- Static provisioning of shared-home using K8s PVs and PVCs
     #
@@ -225,7 +224,7 @@ volumes:
     # https://kubernetes.io/docs/concepts/storage/persistent-volumes/#static
     # https://atlassian.github.io/data-center-helm-charts/examples/storage/aws/SHARED_STORAGE/
     #
-    customVolume: {}
+    #customVolume: {}
     # persistentVolumeClaim:
     #   claimName: "<pvc>"
 
@@ -237,7 +236,7 @@ volumes:
     # -- Specifies the sub-directory of the shared-home volume that will be mounted in to the
     # Jira container.
     #
-    subPath:
+    #subPath:
 
     # Modify permissions on shared-home
     #
@@ -265,13 +264,13 @@ volumes:
       # group-writeable. If this is not the desired behaviour, command used can be specified
       # here.
       #
-      command:
+      #command:
 
   # -- Defines additional volumes that should be applied to all Jira pods.
   # Note that this will not create any corresponding volume mounts;
   # those needs to be defined in jira.additionalVolumeMounts
   #
-  additional: []
+  #additional: []
 
 # Ingress configuration
 #
@@ -280,12 +279,12 @@ volumes:
 # can be used to configure an appropriate Ingress Resource.
 # https://atlassian.github.io/data-center-helm-charts/userguide/CONFIGURATION/#ingress
 #
-ingress:
+#ingress:
 
   # -- Set to 'true' if an Ingress Resource should be created. This depends on a
   # pre-provisioned Ingress Controller being available.
   #
-  create: false
+  #create: false
 
   # -- The class name used by the ingress controller if it's being used.
   #
@@ -293,7 +292,7 @@ ingress:
   # contains multiple ingress controllers, this setting allows you to control
   # which of them is used for Atlassian application traffic.
   #
-  className: "nginx"
+  #className: "nginx"
 
   # -- Set to 'true' if the Ingress Resource is to use the K8s 'ingress-nginx'
   # controller.
@@ -304,53 +303,53 @@ ingress:
   # to be used, in which case the appropriate annotations for that controller must
   # be specified below under 'ingress.annotations'.
   #
-  nginx: true
+  #nginx: true
 
   # -- The max body size to allow. Requests exceeding this size will result
   # in an HTTP 413 error being returned to the client.
   #
-  maxBodySize: 250m
+  #maxBodySize: 250m
 
   # -- Defines a timeout for establishing a connection with a proxied server. It should
   # be noted that this timeout cannot usually exceed 75 seconds.
   #
-  proxyConnectTimeout: 60
+  #proxyConnectTimeout: 60
 
   # -- Defines a timeout for reading a response from the proxied server. The timeout is
   # set only between two successive read operations, not for the transmission of the
   # whole response. If the proxied server does not transmit anything within this time,
   # the connection is closed.
   #
-  proxyReadTimeout: 60
+  #proxyReadTimeout: 60
 
   # -- Sets a timeout for transmitting a request to the proxied server. The timeout is set
   # only between two successive write operations, not for the transmission of the whole
   # request. If the proxied server does not receive anything within this time, the
   # connection is closed.
   #
-  proxySendTimeout: 60
+  #proxySendTimeout: 60
 
   # -- The fully-qualified hostname (FQDN) of the Ingress Resource. Traffic coming in on
   # this hostname will be routed by the Ingress Resource to the appropriate backend
   # Service.
   #
-  host:
+  #host:
 
   # -- The base path for the Ingress Resource. For example '/jira'. Based on a
   # 'ingress.host' value of 'company.k8s.com' this would result in a URL of
   # 'company.k8s.com/jira'. Default value is 'jira.service.contextPath'
   #
-  path:
+  #path:
 
   # -- The custom annotations that should be applied to the Ingress Resource
   # when NOT using the K8s ingress-nginx controller.
   #
-  annotations: {}
+  #annotations: {}
 
   # -- Set to 'true' if browser communication with the application should be TLS
   # (HTTPS) enforced.
   #
-  https: true
+  #https: true
 
   # -- The name of the K8s Secret that contains the TLS private key and corresponding
   # certificate. When utilised, TLS termination occurs at the ingress point where
@@ -361,7 +360,7 @@ ingress:
   # https://kubernetes.io/docs/concepts/configuration/secret/#tls-secrets
   # https://kubernetes.io/docs/concepts/services-networking/ingress/#tls
   #
-  tlsSecretName:
+  #tlsSecretName:
 
 # Jira configuration
 #
@@ -416,26 +415,26 @@ jira:
 
   # -- Whether to apply security context to pod.
   #
-  securityContextEnabled: true
+  #securityContextEnabled: true
 
-  securityContext:
+  #securityContext:
 
     # -- The GID used by the Jira docker image
     # GID will default to 2001 if not supplied and securityContextEnabled is set to true.
     # This is intended to ensure that the shared-home volume is group-writeable by the GID used by the Jira container.
     # However, this doesn't appear to work for NFS volumes due to a K8s bug: https://github.com/kubernetes/examples/issues/260
     #
-    fsGroup: 2001
+    #fsGroup: 2001
 
   # -- Standard K8s field that holds security configurations that will be applied to a container.
   # https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
   #
-  containerSecurityContext: {}
+  #containerSecurityContext: {}
 
   # -- Boolean to define whether to set local home directory permissions on startup
   # of Jira container. Set to 'false' to disable this behaviour.
   #
-  setPermissions: true
+  #setPermissions: true
 
   # Port definitions
   #
@@ -447,77 +446,77 @@ jira:
 
     # -- Ehcache port
     #
-    ehcache: 40001
+    #ehcache: 40001
 
     # -- Ehcache object port
     #
-    ehcacheobject: 40011
+    #ehcacheobject: 40011
 
   # Confirm that Jira is available with a ReadinessProbe
   # https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes
   #
-  readinessProbe:
+  #readinessProbe:
 
     # -- The initial delay (in seconds) for the Jira container readiness probe,
     # after which the probe will start running.
     #
-    initialDelaySeconds: 10
+    #initialDelaySeconds: 10
 
     # -- How often (in seconds) the Jira container readiness probe will run
     #
-    periodSeconds: 5
+    #periodSeconds: 5
 
     # -- The number of consecutive failures of the Jira container readiness probe
     # before the pod fails readiness checks.
     #
-    failureThreshold: 10
+    #failureThreshold: 10
 
   # Confirm that Jira is up and running with a StartupProbe
   # https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-startup-probes
   #
-  startupProbe:
+  #startupProbe:
 
     # -- How often (in seconds) the Jira container startup probe will run
     #
-    periodSeconds: 5
+    #periodSeconds: 5
 
     # -- The number of consecutive failures of the Jira container startup probe
     # before the pod fails startup checks.
     #
-    failureThreshold: 120
+    #failureThreshold: 120
 
   # Ensure that pods are working correctly with a LivenessProbe
   # https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-a-liveness-http-request
   #
-  livenessProbe:
+  #livenessProbe:
 
     # -- Whether to apply the livenessProbe check to pod.
     #
 
-    enabled: true
+    #enabled: true
 
     # -- How often (in seconds) the Jira container liveness probe will run
     #
-    periodSeconds: 5
+    #periodSeconds: 5
 
     # -- The number of consecutive failures of the Jira container liveness probe
     # before the pod fails liveness checks.
     #
-    failureThreshold: 1
+    #failureThreshold: 1
 
   # Jira log configuration
   #
-  accessLog:
+  #accessLog:
 
     # -- The path within the Jira container where the local-home volume should be
     # mounted in order to capture access logs.
     #
-    mountPath: "/opt/atlassian/jira/logs"
+    #mountPath: "/opt/atlassian/jira/logs"
 
     # -- The subdirectory within the local-home volume where access logs should be
     # stored.
     #
-    localHomeSubPath: "log"
+    #localHomeSubPath: "log"
 
   # Use AWS S3 to store avatars. From Jira 9.9 onwards.
   #
@@ -567,25 +566,25 @@ jira:
 
   # Pod resource requests
   #
-  resources:
+  #resources:
 
     # JVM Memory / Heap Size definitions. The values below are based on the
     # defaults defined for the Jira docker container.
     # https://bitbucket.org/atlassian-docker/docker-atlassian-jira/src/master/#markdown-header-memory-heap-size
     #
-    jvm:
+    #jvm:
 
       # -- The maximum amount of heap memory that will be used by the Jira JVM
       #
-      maxHeap: "768m"
+      #maxHeap: "768m"
 
       # -- The minimum amount of heap memory that will be used by the Jira JVM
       #
-      minHeap: "384m"
+      #minHeap: "384m"
 
       # -- The memory reserved for the Jira JVM code cache
       #
-      reservedCodeCache: "512m"
+      #reservedCodeCache: "512m"
 
     # Specifies the standard K8s resource requests and/or limits for the Jira
     # container. It is important that if the memory resources are specified here,
@@ -593,17 +592,17 @@ jira:
     # size, the reserved code cache size, plus other JVM overheads, must be
     # accommodated. Allowing for (maxHeap+codeCache)*1.5 would be an example.
     #
-    container:
+    #container:
 
-      requests:
+      #requests:
 
         # -- Initial CPU request by Jira pod
         #
-        cpu: "2"
+        #cpu: "2"
 
         # -- Initial Memory request by Jira pod
         #
-        memory: "2G"
+        #memory: "2G"
       #  limits:
       #    cpu: "2"
       #    memory: "2G"
